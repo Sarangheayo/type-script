@@ -44,9 +44,14 @@ let bigList2 : Array<bigint> = [100n, 200n, 300n];
 
 // 뜻: 이 배열 안에는 '숫자 배열'이나 '이중 숫자 배열'이 들어갈 수 있다.
 let dimensionalList : number[][][] = [
+    [ // 애도 하나의 배열, 0,
+        [1, 2, 3], // 얘도 하나으 ㅣ배열 0,1,2
+        [4, 5, 6]  // 얘도 하나의 배열 0,1,2
+    ],
     [
-        [1, 2, 3],
-        [4, 5, 6]
+        [7, 8, 9],
+        [10, 11, 12]  // 12번에 접근하고 싶다면? - 1,1,2
+    
     ],
     [
         [7, 8, 9],
@@ -206,9 +211,9 @@ const User5 = {
     role : Role2.USER, // user
 }
 
-// -------------------------
+// -------------------------------------------------------------
 // any 타입 : 모든 타입 허용 , 남용 X, ts 하는 이유가 없어질 수 있음.
-// -------------------------
+// -------------------------------------------------------------
 let anyval: any = 1;
 anyval = 1;
 anyval = '1';
@@ -245,9 +250,9 @@ function test(): void {
 }
 
 
-// -------------------------------------------
+// ------------------------------------------------
 // Algebraic type (대수) : 복수 타입을 합성해 만드는 타입 
-
+// ------------------------------------------------
 // Union : 합집합 / 복수의 타입을 허용하고 싶을 때, `|` 를 통해 타입을 구분 '확신할 수 없을 때 제한하는 범위 a? b? ab? hummm....'
 // Union 사용 시 주의 사항
 
@@ -300,9 +305,9 @@ test3.name; // human, dog 누구나 다 와도 ㄱㅊ
 // 얘는 하나만 연결해주니 안 됨.
 
 
-// -----------------------
-// Intersection : 교집합 
-// -----------------------
+// -------------------------------------------------------------------
+// Intersection : 교집합 : 복수의 타입을 조합하는 경우 `&`기호로 타입을 구분
+// -------------------------------------------------------------------
 type Human2 = {
     name: string;
     lang: string;
@@ -313,3 +318,52 @@ type Dog2 = {
     age: number;
 }
 type Animal2 = Human2 & Dog2; // Animal type : Intersection
+
+// 할당 시점: 각 타입의 모든 프로퍼티를 가지고 있어야 통과
+const Animal3: Animal2 = {
+    name: 'sara'
+    , lang: 'ko'
+    , age: 3    
+};
+
+// 사용 시점: 각 타입의 모든 프로퍼티에 접근 가능
+Animal3.name;
+Animal3.lang;
+Animal3.age;
+
+// ----------------------------------------------------------
+//  never 타입 : 절대 발생하지 않아야 하는 불가능의 의미를 가진 타입
+// ----------------------------------------------------------
+type Color = 'red' | 'blue';
+
+function getFlower(val: Color): string {
+    if (val === 'red') {
+        return 'Rose';
+        } else if (val === 'blue') {
+        return 'Bluebell';
+        } else {
+            return checkInfo(val);    
+    }
+}
+
+function checkInfo(info: never): never {
+    throw new Error(`타입 오류 : ${info}`);
+}
+
+type Color2 = 'pink' | 'white';
+
+function getFlower2(val: Color2): string {
+    switch (val) {
+        case 'pink':
+            return 'Rose';
+        case 'white':
+            return 'Tulip';
+        default:
+            return checkInfo2(val);
+    }
+}
+
+function checkInfo2(info: never): never {
+    throw new Error(`타입 오류 : ${info}`);
+}
+
