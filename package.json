@@ -1,6 +1,11 @@
 {
+  "type": "module",
   "dependencies": {
     "@types/node": "^25.0.9",
     "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/07_abstract_class.js"
   }
 }
